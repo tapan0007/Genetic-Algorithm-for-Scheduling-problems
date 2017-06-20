@@ -1,6 +1,6 @@
 """
-Implementation of a modified genetic algorithm for scheduling problems. In our case, we are solving warp s
-cheduling problem in GPU's.
+Implementation of a modified genetic algorithm for scheduling problems. In our case, we are solving warp 
+scheduling problem in GPU's.
 """
 
 import os
