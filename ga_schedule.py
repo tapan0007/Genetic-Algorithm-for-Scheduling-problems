@@ -1,17 +1,19 @@
+"""
+Implementation of a modified genetic algorithm for scheduling problems. In our case, we are solving warp 
+scheduling problem in GPU's.
+"""
+
 import os
 import sys
 import numpy as np
 import random
 
-
-
-SCHEDULER = ["GTO", "LRR", "Youngest_Warp", "Youngest_Barrier_Warp", "Youngest_Finish_Warp"]
+SCHEDULER = ["GTO", "LRR", "Youngest_Warp", "Youngest_Barrier_Warp", "Youngest_Finish_Warp"] 
 
 class GeneticAlgorithm(object):
 
     def __init__(self, genetics):
         self.genetics = genetics
-
 
     def generate_intial_population(self):
      return [ [np.random.randint(0, len(SCHEDULER)) for chromo in chromosome ] for chromosome in self.genetics ]
@@ -62,7 +64,3 @@ class chromosome():
         """
         fitness = 0
         return fitness
-
-
-
-
