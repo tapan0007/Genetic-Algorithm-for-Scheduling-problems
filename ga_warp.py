@@ -41,8 +41,7 @@ class GeneticAlgorithm(object):
         randindex = np.random.randint(1, size)
         return parent1[:randindex] + parent2[randindex:], parent2[:randindex] + parent1[randindex:]
 
-
-    def mutation(self, offspring):
+   def mutation(self, offspring):
         """
         """
         for i in range(0, len(offspring)):
@@ -50,7 +49,8 @@ class GeneticAlgorithm(object):
                 value = np.random.randint(0, self.size)
                 offspring[i] = index
         return
-    def extend_chromosome(self, chromosome):
+
+ def extend_chromosome(self, chromosome):
         """
         If the size of the chromosomes can vary, add some random scheduler at the end to make
         the chromosome valid
@@ -82,9 +82,6 @@ class chromosome():
         for sch in chromosome:
             file.write(str(sch) + ' ')
         file.close()
-
-
         return fitness
 
 if __name__ == "__main__":
-    return
