@@ -12,11 +12,12 @@ SCHEDULER = ["GTO", "LRR", "Youngest_Warp", "Youngest_Barrier_Warp", "Youngest_F
 
 class GeneticAlgorithm(object):
 
+
     def __init__(self, genetics):
         self.genetics = genetics
 
     def generate_intial_population(self):
-     return [ [np.random.randint(0, len(SCHEDULER)) for chromo in chromosome ] for chromosome in self.genetics.target ]
+        return [ [np.random.randint(0, len(SCHEDULER)) for chromo in chromosome ] for chromosome in self.genetics.target ]
 
     def random_selection(fitnesses):
         """
@@ -49,7 +50,7 @@ class GeneticAlgorithm(object):
         randindex = np.random.randint(1, size)
         return parent1[:randindex] + parent2[randindex:], parent2[:randindex] + parent1[randindex:]
 
-   def mutation(self, offspring):
+    def mutation(self, offspring):
         """
         """
         for i in range(0, len(offspring)):
@@ -58,7 +59,7 @@ class GeneticAlgorithm(object):
                 offspring[i] = index
         return
 
- def extend_chromosome(self, chromosome):
+    def extend_chromosome(self, chromosome):
         """
         If the size of the chromosomes can vary, add some random scheduler at the end to make
         the chromosome valid
