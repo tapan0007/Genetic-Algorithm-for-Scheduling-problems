@@ -12,7 +12,6 @@ SCHEDULER = ["GTO", "LRR", "Youngest_Warp", "Youngest_Barrier_Warp", "Youngest_F
 
 class GeneticAlgorithm(object):
 
-
     def __init__(self, genetics):
         self.genetics = genetics
 
