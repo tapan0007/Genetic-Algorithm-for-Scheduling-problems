@@ -42,7 +42,7 @@ class GeneticAlgorithm(object):
         """
         return fitnesses.index(max(fitnesses))
 
-    def crossover(parent1. parent2):
+    def crossover(parent1, parent2):
         """
         Produces 2 offspring as a result of crossover.
         """
@@ -109,14 +109,14 @@ class GeneticAlgorithm(object):
             for k in range(0, int(0.85 * self.genetics.popsize) -  1):
                 leastfit1 = least_fit(fitnesses)
                 del chromosome[leastfit1]
-                def fitnesses[leastfil1]
+                del fitnesses[leastfit1]
                 leastfit2 = least_fit(fitnesses)
                 del chromosome[leastfit2]
                 del fitnesses[leastfit2]
         return
 
 class chromosome():
-     def __init__(self,  popsize, size, prob_mutation, max_iterations)
+    def __init__(self,  popsize, size, prob_mutation, max_iterations):
         self.popsize = popsize
         self.size = size
         self.prob_mutation = prob_mutation
@@ -124,7 +124,7 @@ class chromosome():
         self.target = [ [0 for i in range(0, size )] for number in popsize  ]
         dict_fitnesses = {}
 
-    def find_fitness(chromosome, index, generation, savelog);
+    def find_fitness(chromosome, index, generation, savelog):
         """
         You can your own custom fitness function
         """
@@ -148,5 +148,8 @@ class chromosome():
         return fitness
 
 if __name__ == "__main__":
-    GeneticAlgorithm(chromosome(100, 8, 0.1, 100))
-    return
+    """
+    The following is for demo. You can change the attributes for the genetic algorithm.
+    """
+    GeneticAlgorithm(chromosome(1, 8, 0.1, 100))
+
