@@ -62,7 +62,7 @@ class GeneticAlgorithm(object):
         return  [SCHEDULER[index] for index in chromosome]
 
     def run():
-
+        return
 
 class chromosome():
      def __init__(self, target,  popsize, size,prob_crossover, prob_mutation, max_iterations)
@@ -86,10 +86,5 @@ class chromosome():
 
         return fitness
 
-
 if __name__ == "__main__":
     return
-
-
-
-
