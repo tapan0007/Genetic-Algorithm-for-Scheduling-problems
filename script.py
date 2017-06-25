@@ -1,9 +1,8 @@
 import os
-
-SCHEDULER = ["neuralnet"]
+import sys
+#SCHEDULER = ["neuralnet"]
 
 DIRECTORY="/storage/others/tapan/gpgpu-simDefault/gpgpu-sim/ispass2009-benchmarks"
-NUM_TO_RUN = 1
 KERNEL = ["AES"]
 
 def runKernel(benchmarkName, scheduler):
@@ -21,7 +20,6 @@ def parseFile(benchmarkName):
     #print(readLine)
     for lines in readLine:
         if "gpu_sim_cycle" in lines:
-            #print(lines)
             resultList.append((int(lines.split(' ')[-1].strip('\n')), lines.split(' ')[0].strip('\n')))
     if resultList == []:
         print("Error in parsing file")
@@ -37,12 +35,17 @@ def outputlog(benchmarkName, scheduler, index, file1):
         file1.write(kern + ' : ' + str(res) + '\n')
         print(str(index) + " : " + kern + ' : ' + str(res) + '\n')
     file1.write('\n#########################\n\n')
+    file1.close()
     return getres[0][0]
 
 if __name__ == "__main__":
-    file1 = open(kern + '_' + "NN" + '.txt', 'wb')
-    runKernel(kern, SCHEDULER[sch])
-    x = outputlog("AES", "neuralnet", index, file1)
+    scheduler = "neuralnet_" + sys.argv[1] + "_" + sys.argv[2]
+    file1 = open(KERNEL[0] + '_' + "NN" + '.txt', 'w')
+    runKernel(KERNEL[0], scheduler)
+    fitness = outputlog("AES", "neuralnet", 1, file1)
+    os.chdir("/storage/others/tapan/gpgpu-simDefault/gpgpu-sim/v3.x/ANN_DATA/genetic_algorithm")
+    file2 = open('data/' + 'generation_' + sys.argv[1] + '/fitness_' + sys.argv[2] + '.txt', 'w')
+    file2.write(str(fitness))
     file1.close()
-
+    file2.close()
 
