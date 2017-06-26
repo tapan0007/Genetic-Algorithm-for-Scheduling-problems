@@ -4,6 +4,7 @@ import numpy as np
 import random
 import subprocess
 
+NORMALIZE = 1000
 """
 TODO: Implement Bayesian Optimisation Algorithm
 """
@@ -23,13 +24,17 @@ class GeneticAlgorithm(object):
         This should a chromosome picked with the probability proportional to its fitness. Roulette
         Selection
         """
-        temp = [max(fitnesses) - fitness for fitness in fitnesses]
+        temp = [max(fitnesses) - fitness + NORMALIZE for fitness in fitnesses] # Every chromosome should have non zero probability
+        newfitness = temp
         total = sum(temp)
         temp = [(fitness * 1.0 / total) for fitness in temp]
         selectrand = np.random.uniform(0, total)
+        print(temp)
+        print(fitnesses)
+        print(selectrand)
         sel = 0
         index = 0
-        for fitness in temp:
+        for fitness in newfitness:
             sel += fitness
             if sel >= selectrand:
                 return index
@@ -53,10 +58,10 @@ class GeneticAlgorithm(object):
         """
         """
         for i in range(0, len(offspring)):
-            if self.prob_crossover > np.random.uniform():
-                value = np.random.randint(0, self.genetics.size)
-                offspring[i] = index
-        return
+            if self.genetics.prob_mutation > np.random.uniform():
+                value = np.random.randint(0, 5)
+                offspring[i] = value
+        return offspring
 
     def extend_chromosome(self, chromosome):
         """
@@ -82,10 +87,10 @@ class GeneticAlgorithm(object):
             print ("*************************************\n")
             fitnesses = []
             index = 1
-            for chromosome in population:     # Calculate the fitness of each chromosome
+            for chromo in population:     # Calculate the fitness of each chromosome
                 print("Calculating fitness for chromosome index " + str(index))
-                fitness_chromo = self.genetics.find_fitness(chromosome, index, generation_num, 1)
-                print("The fitness of the chromosome with index " + str(fitness_chromo))
+                fitness_chromo = self.genetics.find_fitness(chromo, index, generation_num, 1)
+                print("The fitness of the chromosome with index " + str(index) + " " + str(fitness_chromo) + "\n")
                 fitnesses.append(fitness_chromo)
                 index = index + 1
 
@@ -94,30 +99,41 @@ class GeneticAlgorithm(object):
             print("Best fitness among this is : " + str(min(fitnesses)))
 
             new_chromosomes, new_fitnesses = [], []
-            print("Perform mutation and crossover")
+            print("Performing mutation and crossover")
             for k in range(0, int(0.85 * self.genetics.popsize)):
                 parent1 = self.random_selection(fitnesses)
                 parent2 = parent1
-                while parent1 != parent2:
+                iterations = 0
+                while parent1 == parent2 and iterations < 100:
                     parent2 = self.random_selection(fitnesses)
-                off1, off2 = self.crossover(fitnesses[parent1], fitnesses[parent2])
+                    iterations = iterations + 1
+                print(str(parent1) + " " + str(parent2))
+                off1, off2 = self.crossover(population[parent1], population[parent2])
                 self.mutation(off1)
                 self.mutation(off2)
                 new_chromosomes.append(off1)
                 new_chromosomes.append(off2)
+                print("Newly created chromosomes " + str(off1) + " " + str(off2))
 
             for chromo in new_chromosomes:
-                new_fitnesses.append(find_fitness(chromo, "temp", "temp", 0))
+                new_fitnesses.append(self.genetics.find_fitness(chromo, 200, 200, 0))
 
-            chromosome = chromosome + new_chromosomes
+            print("Best fitness among the newly created Chromosome is : " + str(min(new_fitnesses)))
+
+            chromosome = population + new_chromosomes
             fitnesses = fitnesses + new_fitnesses
+            print("Newly constructed chromosomes "  + str(chromosome))
+            print("Newly constructed chromosomes fitnesses " + str(fitnesses))
             for k in range(0, int(0.85 * self.genetics.popsize)):
-                leastfit1 = least_fit(fitnesses)
+                leastfit1 = self.least_fit(fitnesses)
                 del chromosome[leastfit1]
                 del fitnesses[leastfit1]
-                leastfit2 = least_fit(fitnesses)
+                leastfit2 = self.least_fit(fitnesses)
                 del chromosome[leastfit2]
                 del fitnesses[leastfit2]
+            population = chromosome
+            print("Chromosomes left after selection " + str(chromosome))
+        print("The best fitness solution found is " + str(min(fitnesses)) + " " + str(index(min(fitnesses))))
         return
 
 class chromosome():
@@ -140,7 +156,8 @@ class chromosome():
         for sch in chromo:
             file1.write(str(sch) + ' ')
         file1.close()
-        os.system("python script.py " + str(generation) + " " + str(index))
+        os.system("python script.py " + str(generation) + " " + str(index) + " >> pythonlog.txt")
+        print("###################\n")
         file1 = open('data/' + "generation_" + str(generation) + "/" + "fitness_" + str(index) + ".txt", "r")
         fitness = int(file1.readlines()[0])
         """
@@ -159,5 +176,5 @@ if __name__ == "__main__":
     """
     The following is for demo. You can change the attributes for the genetic algorithm.
     """
-    #print(chromosome(1,3,0.1,1, {}).find_fitness([0, 1, 0], 1, 1, 1))
-    GeneticAlgorithm(chromosome(2, 3, 0.1, 3, {})).run()
+    #print(chromosome(1,3,0.1,1, {}).find_fitness([0, 1, 0], 200, 200, 1))
+    GeneticAlgorithm(chromosome(3, 8, 0.1, 4, {})).run()
