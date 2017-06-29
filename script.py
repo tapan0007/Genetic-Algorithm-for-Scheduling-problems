@@ -3,7 +3,7 @@ import sys
 #SCHEDULER = ["neuralnet"]
 
 DIRECTORY="/storage/others/tapan/gpgpu-simDefault/gpgpu-sim/ispass2009-benchmarks"
-KERNEL = ["AES"]
+KERNEL = ["scalarProd"]
 
 def runKernel(benchmarkName, scheduler):
     direc = DIRECTORY + '/' + benchmarkName
@@ -39,11 +39,11 @@ def outputlog(benchmarkName, scheduler, index, file1):
     return getres[0][0]
 
 if __name__ == "__main__":
-    scheduler = "neuralnet_" + sys.argv[1] + "_" + sys.argv[2]
+    scheduler = "neuralnet_" + KERNEL[0] + "_" + sys.argv[1] + "_" + sys.argv[2]
     file1 = open(KERNEL[0] + '_' + "NN" + '.txt', 'w')
     runKernel(KERNEL[0], scheduler)
-    fitness = outputlog("AES", "neuralnet", 1, file1)
-    os.chdir("/storage/others/tapan/gpgpu-simDefault/gpgpu-sim/v3.x/ANN_DATA/genetic_algorithm")
+    fitness = outputlog(KERNEL[0], "neuralnet", 1, file1)
+    os.chdir("/storage/others/tapan/gpgpu-simDefault/gpgpu-sim/v3.x/ANN_DATA/genetic_algorithm/kernel/" + KERNEL[0])
     file2 = open('data/' + 'generation_' + sys.argv[1] + '/fitness_' + sys.argv[2] + '.txt', 'w')
     file2.write(str(fitness))
     file1.close()
